@@ -1,0 +1,99 @@
+
+generator client {
+  provider = "prisma-client-js"
+  previewFeatures = ["fullTextSearch", "fullTextIndex"]
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model user {
+  id String @id @default(uuid())
+  username String 
+  email String  @unique
+  password String
+  details String? @default("")
+  followers Int @default(0)
+  following Int @default(0)
+  posts Int @default(0)
+  photo String 
+  photoId String 
+  createdAt DateTime @default(now())
+  videos video[]
+  like likedVideo[]
+  comment comment[]
+  followingId followers[] @relation(name: "following")
+  beenFollowingId followers[] @relation(name : "beenFollowing")
+  triggerId notification[] @relation(name: "trigger")
+  notifierId notification[] @relation(name : "notifier")
+  @@fulltext([username])
+}
+
+model video {
+  id String @id @default(uuid())
+  details String 
+  likes Int @default(0)
+  comments Int @default(0)
+  url String 
+  urlId String 
+  thumbnail String 
+  thumbnailId String 
+  user user @relation(fields: [userId], references: [id],onDelete: Cascade)
+  userId String 
+  like likedVideo[]
+  comment comment[]
+  notification notification[]
+  createdAt DateTime @default(now())
+  @@fulltext([details])
+}
+
+
+
+model comment {
+  id String @id @default(uuid())
+  details String 
+  user user @relation(fields: [userId], references: [id],onDelete: Cascade)
+  userId String 
+  video video @relation(fields: [videoId], references: [id],onDelete: Cascade)
+  videoId String 
+  createdAt DateTime @default(now())
+}
+
+
+model likedVideo {
+  user user @relation(fields: [userId], references: [id],onDelete: Cascade)
+  userId String 
+  video video @relation(fields: [videoId], references: [id],onDelete: Cascade)
+  videoId String 
+  @@id([userId,videoId])
+}
+
+model followers {
+  user user @relation(fields: [followingId], references: [id] , name: "following",onDelete: Cascade)
+  user2 user @relation(fields: [beenFollowingId], references: [id], name: "beenFollowing",onDelete: Cascade)
+  followingId String 
+  beenFollowingId String 
+  @@id([beenFollowingId,followingId])
+}
+
+model notificationMessage {
+  id Int @id @default(autoincrement())
+  messageDetail String
+  notification notification[]
+}
+
+model notification {
+  id String @id @default(uuid())
+  message notificationMessage @relation(fields: [messageId], references: [id],onDelete: Cascade)
+  messageId Int
+  video video ? @relation(fields: [videoId], references: [id],onDelete: Cascade) 
+  videoId String?
+  seen Boolean @default(false)
+  user user @relation(fields: [triggerId], references: [id] , name: "trigger",onDelete: Cascade)
+  user2 user @relation(fields: [notifierId], references: [id], name: "notifier",onDelete: Cascade)
+  triggerId String 
+  notifierId String
+  createdAt DateTime @default(now())
+}

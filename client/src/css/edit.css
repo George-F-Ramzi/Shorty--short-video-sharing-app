@@ -1,0 +1,62 @@
+.edit-form {
+  height: 100%;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.edit-input {
+  margin-top: 16px;
+}
+
+.edit-btn {
+  margin-top: 24px;
+  width: 100%;
+}
+
+.btn--danger {
+  background-color: red;
+}
+
+.photo-form {
+  height: 100%;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-photo-input {
+  height: 280px;
+  width: 200px;
+  border-radius: 8px;
+  margin-bottom: 160px;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.input-file-photo {
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+  z-index: 1;
+  position: absolute;
+  cursor: pointer;
+}
+
+.img-edit-cover {
+  height: 100%;
+  width: 100%;
+  border-radius: 8px;
+  position: absolute;
+}
+
+.btn--edit {
+  width: 100%;
+}

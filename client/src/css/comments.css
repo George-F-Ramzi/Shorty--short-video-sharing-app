@@ -1,0 +1,42 @@
+.comment {
+  margin-top: 16px;
+}
+
+.comment__user {
+  display: flex;
+  margin-bottom: 8px;
+}
+
+.comment__img {
+  height: 48px;
+  width: 48px;
+  border-radius: 100%;
+}
+
+.user__details {
+  margin-left: 12px;
+}
+
+.date {
+  font-size: var(--body2);
+}
+
+.username {
+  font-size: 16px;
+}
+
+.comment__detail {
+  font-weight: 400;
+  margin-bottom: 12px;
+  font-size: var(--bdoy1);
+}
+
+.line {
+  height: 1px;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.comment__input {
+  margin: 12px 0;
+}

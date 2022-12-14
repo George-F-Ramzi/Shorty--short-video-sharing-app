@@ -1,0 +1,105 @@
+.profile__header {
+  width: 100%;
+  margin-top: 16px;
+}
+
+.header__user {
+  display: flex;
+  align-items: center;
+}
+
+.user__img {
+  height: 100px;
+  width: 100px;
+  border-radius: 4px;
+  position: relative;
+}
+
+.user__info {
+  flex-grow: 1;
+  margin-left: 12px;
+  min-height: 100px;
+}
+
+.info__username {
+  font-size: var(--h5);
+}
+
+.header__numbers {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 32px 0;
+  padding: 0 12px;
+}
+
+.number {
+  font-size: var(--h3);
+  font-weight: bold;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.number__identifier {
+  font-size: var(--body1);
+  margin-top: 8px;
+  font-weight: 400;
+}
+
+.img-cover {
+  width: 100%;
+  height: 100%;
+  border-radius: 4px;
+}
+
+.img-edit {
+  position: absolute;
+  bottom: 4%;
+  right: 4%;
+  color: white;
+  height: 40px;
+  width: 40px;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.edit-image-input {
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  position: absolute;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 620px) {
+  .header__user {
+    display: grid;
+    grid-template-columns: 100px auto;
+    row-gap: 12px;
+  }
+  .header__user .btn {
+    grid-column: 1/4;
+  }
+}
+
+@media screen and (max-height: 772px) {
+  .header__numbers {
+    margin: 24px 0;
+    padding: 0 8px;
+  }
+
+  .number {
+    font-size: var(--h3);
+  }
+
+  .number__identifier {
+    font-size: var(--body1);
+    margin-top: 8px;
+    font-weight: 400;
+  }
+}

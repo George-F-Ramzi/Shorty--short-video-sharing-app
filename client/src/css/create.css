@@ -1,0 +1,80 @@
+.header-files-input {
+  display: grid;
+  grid-template-columns: 49% 49%;
+  justify-content: center;
+  height: 400px;
+  margin-top: 16px;
+  column-gap: 12px;
+}
+
+.input-body {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  border-radius: 4px;
+}
+
+.previewPhoto {
+  height: 100%;
+  width: 100%;
+  z-index: 1;
+  position: absolute;
+  border-radius: 4px;
+}
+
+.previewVideo {
+  height: 100%;
+  width: 100%;
+  z-index: 1;
+  position: absolute;
+  border-radius: 4px;
+}
+
+.input-placeholder {
+  height: 100%;
+  width: 100%;
+  background-color: black;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  color: white;
+  justify-content: center;
+  border-radius: 4px;
+}
+
+.input-file {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  z-index: 1;
+  opacity: 0;
+  border-radius: 4px;
+}
+
+.details-input {
+  margin-top: 12px;
+}
+
+.create-btn {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+
+@media screen and (max-height: 774px) {
+  .header-files-input {
+    height: 380px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .header-files-input {
+    height: 320px;
+  }
+}
+
+@media screen and (max-width: 384px) {
+  .header-files-input {
+    height: 280px;
+  }
+}
