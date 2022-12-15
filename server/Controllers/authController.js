@@ -1,11 +1,12 @@
 const joi = require("joi");
-const { unlink } = require("node:fs/promises");
 const prisma = require("../prisma/prisma");
 const lodash = require("lodash");
 const cloudinary = require("../Middlewears/cloudinary");
 
 const UploadVideo = async (req, res) => {
-  const { details, video, photo } = req.body;
+  const { details } = req.body;
+  const { filename: photoId, path: photoUrl } = req.files.photo[0];
+  const { filename: videoId, path: videoUrl } = req.files.video[0];
   const { _id } = req.user;
 
   const schema = joi.object({
@@ -19,65 +20,38 @@ const UploadVideo = async (req, res) => {
   const followers = await prisma.followers.findMany({
     where: { beenFollowingId: _id },
   });
-  let destroyPhoto;
-  let destroyVideo;
-  if (video && photo) {
-    try {
-      const uploadVideo = await cloudinary.uploader.upload(video, {
-        resource_type: "video",
-      });
-      const uploadPhoto = await cloudinary.uploader.upload(photo);
 
-      destroyVideo = uploadVideo.public_id;
-      destroyPhoto = uploadPhoto.public_id;
-
-      const create = await prisma.video.create({
-        data: {
-          url: uploadVideo.url,
-          details,
-          thumbnail: uploadPhoto.url,
-          userId: _id,
-          urlId: uploadVideo.public_id,
-          thumbnailId: uploadPhoto.public_id,
-        },
-      });
-      await prisma.user.update({
-        where: { id: _id },
-        data: { posts: { increment: 1 } },
-      });
-      if (!lodash.isEmpty(followers)) {
-        followers.forEach(async (follower) => {
-          await prisma.notification.create({
-            data: {
-              messageId: 2,
-              triggerId: _id,
-              notifierId: follower.followingId,
-              videoId: create.id,
-            },
-          });
+  try {
+    const create = await prisma.video.create({
+      data: {
+        url: videoUrl,
+        details,
+        thumbnail: photoUrl,
+        userId: _id,
+        urlId: videoId,
+        thumbnailId: photoId,
+      },
+    });
+    await prisma.user.update({
+      where: { id: _id },
+      data: { posts: { increment: 1 } },
+    });
+    if (!lodash.isEmpty(followers)) {
+      followers.forEach(async (follower) => {
+        await prisma.notification.create({
+          data: {
+            messageId: 2,
+            triggerId: _id,
+            notifierId: follower.followingId,
+            videoId: create.id,
+          },
         });
-      }
-      await unlink(video);
-      await unlink(photo);
-      res.status(200).send("File Uploaded Successfully");
-    } catch (error) {
-      await unlink(video);
-      await unlink(photo);
-
-      if (!lodash.isEmpty(destroyVideo)) {
-        await cloudinary.uploader.destroy(destroyVideo, {
-          type: "upload",
-          resource_type: "video",
-        });
-      }
-      if (!lodash.isEmpty(destroyPhoto)) {
-        await cloudinary.uploader.destroy(destroyPhoto);
-      }
-
-      res.status(400).send(error.message);
+      });
     }
-  } else {
-    return res.status(400).send("File Did Not Uploaded Successfully ");
+
+    res.status(200).send("File Uploaded Successfully");
+  } catch (error) {
+    res.status(400).send("File Uploaded UnSuccessfully");
   }
 };
 
@@ -296,7 +270,7 @@ const UpdateProfileDetails = async (req, res) => {
 };
 
 const UpdateProfilePhoto = async (req, res) => {
-  const { photo } = req.body;
+  const { path, filename } = req.file;
   const { _id } = req.user;
 
   const prevId = "123456789";
@@ -308,18 +282,15 @@ const UpdateProfilePhoto = async (req, res) => {
     });
 
     if (prevId !== photoId) {
-      const uploadPhoto = await cloudinary.uploader.upload(photo);
       await cloudinary.uploader.destroy(photoId);
       await prisma.user.update({
-        data: { photo: uploadPhoto.url, photoId: uploadPhoto.public_id },
+        data: { photo: path, photoId: filename },
         where: { id: _id },
       });
     }
 
-    await unlink(photo);
     res.status(200).send("Updated Successfully");
   } catch (error) {
-    await unlink(photo);
     res.status(400).send("Updated un did not completed : " + error);
   }
 };
