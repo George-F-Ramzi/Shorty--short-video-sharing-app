@@ -72,7 +72,7 @@ const GetVideos = async (req, res) => {
       },
     });
 
-    res.status(200).josn(data);
+    res.status(200).json(data);
   } catch (error) {
     res.status(400).json(error);
   }
