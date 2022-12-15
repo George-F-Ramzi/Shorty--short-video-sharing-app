@@ -17,10 +17,6 @@ const UploadVideo = async (req, res) => {
 
   if (error) return res.status(400).send(error.message);
 
-  const followers = await prisma.followers.findMany({
-    where: { beenFollowingId: _id },
-  });
-
   try {
     const create = await prisma.video.create({
       data: {
@@ -36,6 +32,11 @@ const UploadVideo = async (req, res) => {
       where: { id: _id },
       data: { posts: { increment: 1 } },
     });
+
+    const followers = await prisma.followers.findMany({
+      where: { beenFollowingId: _id },
+    });
+
     if (!lodash.isEmpty(followers)) {
       followers.forEach(async (follower) => {
         await prisma.notification.create({
@@ -51,7 +52,7 @@ const UploadVideo = async (req, res) => {
 
     res.status(200).send("File Uploaded Successfully");
   } catch (error) {
-    res.status(400).send("File Uploaded UnSuccessfully");
+    res.status(400).json(error);
   }
 };
 
