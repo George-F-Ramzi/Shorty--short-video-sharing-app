@@ -210,7 +210,7 @@ const VideoCard = () => {
         ref={theVideo}
         loop
         className="video__body"
-        // src={video.url}
+        src={video.url}
         autoPlay
         muted
       />
