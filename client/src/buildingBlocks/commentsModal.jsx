@@ -15,6 +15,7 @@ const CommentsModal = () => {
     currentVideo,
     spinner,
     active,
+    getProfile,
   } = useContext(authContext);
   const [details, setDetails] = useState("");
   const [error, setError] = useState("");
@@ -78,7 +79,12 @@ const CommentsModal = () => {
                 <p>There's Noting To Show Here</p>
               ) : (
                 commentsData.map((comment, index) => (
-                  <Comment key={index} info={comment} />
+                  <Comment
+                    key={index}
+                    set={setComments}
+                    profile={getProfile}
+                    info={comment}
+                  />
                 ))
               )}
             </div>

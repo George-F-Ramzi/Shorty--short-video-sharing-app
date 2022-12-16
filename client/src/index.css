@@ -3,6 +3,10 @@
   padding: 0;
   box-sizing: border-box;
 }
+html {
+  min-height: -webkit-fill-available;
+  min-height: fill-available;
+}
 
 body {
   font-family: Inter, "Segoe UI", "Roboto", "Oxygen", sans-serif;

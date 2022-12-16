@@ -5,6 +5,7 @@
 .comment__user {
   display: flex;
   margin-bottom: 8px;
+  cursor: pointer;
 }
 
 .comment__img {

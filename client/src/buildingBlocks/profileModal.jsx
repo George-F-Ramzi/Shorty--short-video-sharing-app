@@ -15,8 +15,9 @@ const ProfileModal = () => {
     doUnFollow,
     doFollow,
     setEdit,
+    setProfileData,
   } = useContext(authContext);
-  const [follow, setFollow] = useState(0);
+  const [follow, setFollow] = useState(3);
 
   useEffect(() => {
     trackData();
@@ -40,6 +41,7 @@ const ProfileModal = () => {
           <h5 className="hr__title">Profile</h5>
           <RiCloseFill
             onClick={() => {
+              setProfileData({});
               setProfile(false);
             }}
             size={"32px"}

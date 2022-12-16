@@ -330,6 +330,7 @@ const HomePage = () => {
               previewedVideo,
               setEdit,
               setEditImage,
+              setProfileData,
             }}
           >
             {search ? <SearchModal /> : ""}

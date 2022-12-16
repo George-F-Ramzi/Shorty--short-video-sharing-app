@@ -1,9 +1,15 @@
 import React from "react";
 import { DateFormating } from "../utility/dateFormating";
-const Comment = ({ info }) => {
+const Comment = ({ info, profile, set }) => {
   return (
     <div className="comment">
-      <div className="comment__user">
+      <div
+        onClick={() => {
+          profile(info.user.id);
+          set(false);
+        }}
+        className="comment__user"
+      >
         <img src={info.user.photo} className="comment__img" />
         <div className="user__details">
           <h5 className=" username">{info.user.username}</h5>

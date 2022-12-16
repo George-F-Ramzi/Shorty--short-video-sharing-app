@@ -2,6 +2,8 @@ import { Form, Link, useActionData, redirect } from "react-router-dom";
 import { RegisterApi } from "../api/userApi";
 import ErrorText from "./errorText";
 
+let loading = false;
+
 export const RegisterAction = async ({ request }) => {
   const formData = await request.formData();
   const data = {};
@@ -11,8 +13,10 @@ export const RegisterAction = async ({ request }) => {
   try {
     const request = await RegisterApi(data);
     localStorage.setItem("token", request.headers["x-auth-token"]);
+    loading = false;
     return redirect("/home");
   } catch (error) {
+    loading = false;
     return error.response.data;
   }
 };
@@ -21,7 +25,14 @@ const Register = () => {
   const error = useActionData();
   return (
     <div className="form-container">
-      <Form method="post" className="form" action="/register">
+      <Form
+        onSubmit={() => {
+          loading = true;
+        }}
+        method="post"
+        className="form"
+        action="/register"
+      >
         <h3 className="form__title">Hi There!</h3>
         <p className="form__subtitle body1">Create a new account</p>
         <input
@@ -45,9 +56,15 @@ const Register = () => {
           type="password"
         />
         {error && error.includes("password") && <ErrorText error={error} />}
-        <button type="submit" className="btn btn--big">
-          Register
-        </button>
+        {loading ? (
+          <button disabled className="btn btn--big btn--loading">
+            Loading...
+          </button>
+        ) : (
+          <button type="submit" className="btn btn--big">
+            Register
+          </button>
+        )}
         <p className="more-info body1">
           Already have account?{" "}
           <Link className="info__link" to="/">

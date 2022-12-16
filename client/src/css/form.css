@@ -42,7 +42,7 @@
 
 .error {
   height: 32px;
-  width: 100%;
+  width: 352px;
   border-radius: 4px;
   margin-bottom: 8px;
   background-color: rgb(255, 209, 209);
@@ -54,6 +54,32 @@
 .error__text {
   color: black;
   font-size: var(--body2);
+}
+
+@keyframes color {
+  0% {
+    background: #33cccc;
+  }
+  20% {
+    background: #33cc36;
+  }
+  40% {
+    background: #b8cc33;
+  }
+  60% {
+    background: #fcca00;
+  }
+  80% {
+    background: #33cc36;
+  }
+  100% {
+    background: #33cccc;
+  }
+}
+
+.btn--loading {
+  animation: color 9s infinite linear;
+  background: #33cccc;
 }
 
 @media screen and (max-height: 630px) {
@@ -74,5 +100,11 @@
   }
   .more-info {
     margin-top: 16px;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .error {
+    width: 100%;
   }
 }

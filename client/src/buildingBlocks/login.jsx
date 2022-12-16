@@ -2,6 +2,8 @@ import { Form, Link, useActionData, redirect } from "react-router-dom";
 import { LoginApi } from "../api/userApi";
 import ErrorText from "./errorText";
 
+let loading = false;
+
 export const loginAction = async ({ request }) => {
   const formData = await request.formData();
   const data = {};
@@ -10,8 +12,10 @@ export const loginAction = async ({ request }) => {
   try {
     const request = await LoginApi(data);
     localStorage.setItem("token", request.headers["x-auth-token"]);
+    loading = false;
     return redirect("/home");
   } catch (error) {
+    loading = false;
     return error.response.data;
   }
 };
@@ -21,7 +25,14 @@ const Login = () => {
 
   return (
     <div className="form-container">
-      <Form action="/" method="post" className="form">
+      <Form
+        onSubmit={() => {
+          loading = true;
+        }}
+        action="/"
+        method="post"
+        className="form"
+      >
         <h3 className="form__title">Welcome Back!</h3>
         <p className="form__subtitle body1">Login to your account</p>
         <input
@@ -38,9 +49,15 @@ const Login = () => {
           type="password"
         />
         {error && error.includes("password") && <ErrorText error={error} />}
-        <button type="submit" className="btn btn--big">
-          Login
-        </button>
+        {loading ? (
+          <button disabled className="btn btn--big btn--loading">
+            Loading...
+          </button>
+        ) : (
+          <button type="submit" className="btn btn--big">
+            Login
+          </button>
+        )}
         <p className="more-info body1">
           You don't have account?{" "}
           <Link className="info__link" to="/register">
